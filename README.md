@@ -1,1 +1,1 @@
-# solana-contracts
+# Solana contracts
