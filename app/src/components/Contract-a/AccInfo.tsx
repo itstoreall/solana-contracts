@@ -2,13 +2,14 @@
 import { useState, useContext, useMemo } from 'react';
 import AContext from './context';
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js';
+import { accInfo as log } from '../../logs/contract-a.js';
 
 const AccountInfoComponent = () => {
   const [theAccInfo, setTheAccInfo] = useState(null);
 
   const { programID } = useContext(AContext);
 
-  useMemo(() => console.log('AccInfo in process...'), []);
+  useMemo(() => log.process(), []);
 
   const getAccInfo = async () => {
     try {
@@ -19,12 +20,13 @@ const AccountInfoComponent = () => {
 
       accountInfo && setTheAccInfo(accountInfo.lamports);
 
-      console.log('AccInfo: programID --->', programID);
-      console.log('AccInfo: programInfo --->', accountInfo);
-    } catch (error) {
-      let errorMessage =
-        error instanceof Error ? error.message : 'Unknown Error';
-      console.log('ERROR in AccountInfo:', errorMessage);
+      log.res(programID, accountInfo);
+
+      // console.log('AccInfo: programID --->', programID);
+      // console.log('AccInfo: programInfo --->', accountInfo);
+    } catch (err) {
+      let message = err instanceof Error ? err.message : 'Unknown Error';
+      log.err(message);
     }
   };
 

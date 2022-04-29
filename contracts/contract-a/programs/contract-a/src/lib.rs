@@ -19,9 +19,13 @@ pub mod contract_a {
 ) -> Result<()> {
     msg!("Hello World Rust program entrypoint");
 
+    msg!("program_id: {}", program_id);
+    
     let accounts_iter = &mut accounts.iter();
-
+    
     let account = next_account_info(accounts_iter)?;
+
+    msg!("account.owner: {}", account.owner);
 
     if account.owner != program_id {
         msg!("Greeted account does not have the correct program id");

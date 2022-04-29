@@ -11,8 +11,8 @@ import BalanceComponent from './Balance.tsx';
 import TransferComponent from './Transfer.tsx';
 import AccountInfoComponent from './AccInfo.tsx';
 import SecondAccComponent from './SecondAcc.tsx';
-// import GetterComponent from './Getter.tsx';
-// import SetterComponent from './Setter.tsx';
+import GetterComponent from './Getter.tsx';
+import SetterComponent from './Setter.tsx';
 // -------------------
 
 const ContractA = () => {
@@ -29,8 +29,8 @@ const ContractA = () => {
   const [transfer, setTransfer] = useState(false);
   const [accountInfo, setAccountInfo] = useState(false);
   const [secondAcc, setSecondAcc] = useState(false);
-  // const [greeting, setGreeting] = useState(false);
-  // const [setter, setSetter] = useState(false);
+  const [greeting, setGreeting] = useState(false);
+  const [setter, setSetter] = useState(false);
 
   return (
     <AContext.Provider
@@ -164,7 +164,7 @@ const ContractA = () => {
           </div>
         </div>
 
-        {/* <div
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -177,8 +177,9 @@ const ContractA = () => {
           <div style={{ padding: 40 }}>
             <div>{greeting && <GetterComponent />}</div>
           </div>
-        </div> */}
-        {/* <div
+        </div>
+
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -191,7 +192,7 @@ const ContractA = () => {
           <div style={{ padding: 40 }}>
             <div>{setter && <SetterComponent />}</div>
           </div>
-        </div> */}
+        </div>
       </div>
     </AContext.Provider>
   );

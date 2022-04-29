@@ -7,14 +7,14 @@ import {
   clusterApiUrl,
   LAMPORTS_PER_SOL,
 } from '@solana/web3.js';
+import { fund as log } from '../../logs/contract-a.js';
 
 const FundComponent = () => {
-  const [theHash, setTheHash] = useState(null);
   const [theAmount, setTheAmount] = useState(null);
 
   const { accountID } = useContext(AContext);
 
-  useMemo(() => console.log('Fund in process...'), []);
+  useMemo(() => log.process(), []);
 
   const getFund = async () => {
     try {
@@ -25,19 +25,17 @@ const FundComponent = () => {
       const hash = await connection.requestAirdrop(publicKey, amount);
       await connection.confirmTransaction(hash);
 
-      setTheHash(hash);
       setTheAmount(amount);
 
-      console.log('Fund: accountID --->', accountID);
-      console.log('Fund: hash --->', hash);
-    } catch (error) {
-      let errorMessage =
-        error instanceof Error ? error.message : 'Unknown Error';
-      console.log('ERROR in Fund:', errorMessage);
+      log.res(accountID, hash);
+    } catch (err) {
+      let message = err instanceof Error ? err.message : 'Unknown Error';
+      log.err(message);
+      setTheAmount('ERROR');
     }
   };
 
-  theHash === null && getFund();
+  theAmount === null && getFund();
 
   return (
     <div>
@@ -46,12 +44,12 @@ const FundComponent = () => {
           <span style={{ display: 'inline-flex', width: '150px' }}>
             funded:
           </span>
-          {theHash !== null && (
+          {theAmount !== null && (
             <span style={{ display: 'inline-flex', width: '150px' }}>
               {theAmount}
             </span>
           )}
-          <button onClick={() => setTheHash(null)}>again</button>
+          <button onClick={() => setTheAmount(null)}>again</button>
         </div>
       </>
     </div>

@@ -1,11 +1,12 @@
 // @ts-nocheck
 import { useState, useMemo } from 'react';
 import { Connection, clusterApiUrl } from '@solana/web3.js';
+import { connect as log } from '../../logs/contract-a.js';
 
 const ConnectComponent = () => {
   const [vers, setVers] = useState(null);
 
-  useMemo(() => console.log('Connect in process...'), []);
+  useMemo(() => log.process(), []);
 
   const getConnect = async () => {
     try {
@@ -14,17 +15,16 @@ const ConnectComponent = () => {
       const version = await connection.getVersion();
 
       setVers(version['solana-core']);
-    } catch (error) {
-      let errorMessage =
-        error instanceof Error ? error.message : 'Unknown Error';
-
-      console.log('ERROR in Connect:', errorMessage);
+    } catch (err) {
+      let message = err instanceof Error ? err.message : 'Unknown Error';
+      log.err(message);
+      setVers('ERROR');
     }
   };
 
   vers === null && getConnect();
 
-  useMemo(() => vers && console.log('version --->', vers), [vers]);
+  useMemo(() => vers && log.res(vers), [vers]);
 
   return (
     <div>
