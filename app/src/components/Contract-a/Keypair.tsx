@@ -1,12 +1,13 @@
 // @ts-nocheck
 import { useState, useMemo } from 'react';
 import { Keypair } from '@solana/web3.js';
+import { keypair as log } from '../../logs/contract-a.js';
 
 const KeypairComponent = () => {
   const [theAddress, setTheAddress] = useState(null);
   const [theSecret, setTheSecret] = useState(null);
 
-  useMemo(() => console.log('Keypair in process...'), []);
+  useMemo(() => log.process(), []);
 
   const getKeypair = () => {
     try {
@@ -17,12 +18,11 @@ const KeypairComponent = () => {
       setTheAddress(address);
       setTheSecret(secret);
 
-      console.log('KeypairComponent: address --->', address);
-      console.log('KeypairComponent: secret --->', secret);
-    } catch (error) {
-      let errorMessage =
-        error instanceof Error ? error.message : 'Unknown Error';
-      console.log('ERROR in Keypair:', errorMessage);
+      log.res(address, secret);
+    } catch (err) {
+      let message = err instanceof Error ? err.message : 'Unknown Error';
+      log.err(message);
+      setTheAddress('ERROR');
     }
   };
 

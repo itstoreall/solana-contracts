@@ -9,6 +9,7 @@ import {
   Transaction,
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
+import { transfer as log } from '../../logs/contract-a.js';
 
 const TransferComponent = () => {
   const [theHash, setTheHash] = useState(null);
@@ -16,7 +17,7 @@ const TransferComponent = () => {
   const { accountID, accSecretID, recipientID } = useContext(AContext);
   const lamports = 8800000;
 
-  useMemo(() => console.log('Transfer in process...'), []);
+  useMemo(() => log.process(), []);
 
   const makeTransfer = async () => {
     try {
@@ -24,7 +25,6 @@ const TransferComponent = () => {
       const connection = new Connection(url, 'confirmed');
       const fromPubkey = new PublicKey(accountID);
       const toPubkey = new PublicKey(recipientID);
-      console.log('1');
       const secretKey = Uint8Array.from(JSON.parse(accSecretID as string));
 
       const instructions = SystemProgram.transfer({
@@ -50,18 +50,10 @@ const TransferComponent = () => {
 
       setTheHash(hash);
 
-      console.log('Trans: accountID --->', accountID);
-      console.log('Trans: accSecretID --->', accSecretID);
-      console.log('Trans: recipientID --->', recipientID);
-      console.log('Trans: lamports --->', lamports);
-      console.log(
-        'Trans: signers --->',
-        JSON.stringify(Array.from(signers[0].secretKey))
-      );
-    } catch (error) {
-      let errorMessage =
-        error instanceof Error ? error.message : 'Unknown Error';
-      console.log('ERROR in Transfer:', errorMessage);
+      log.res(accountID, recipientID, lamports);
+    } catch (err) {
+      let message = err instanceof Error ? err.message : 'Unknown Error';
+      log.err(message);
     }
   };
 

@@ -2,6 +2,7 @@
 import { useState, useContext, useMemo } from 'react';
 import AContext from './context';
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import { balance as log } from '../../logs/contract-a.js';
 
 const BalanceComponent = () => {
   const [theBalance, setTheBalance] = useState(null);
@@ -9,7 +10,7 @@ const BalanceComponent = () => {
 
   const { accountID, recipientID } = useContext(AContext);
 
-  useMemo(() => console.log('Balance in process...'), []);
+  useMemo(() => log.process, []);
 
   const getBalance = async () => {
     try {
@@ -28,15 +29,11 @@ const BalanceComponent = () => {
       setTheBalance(balance);
       setTheRecipientBalance(recipientBalance);
 
-      console.log('Balance: address --->', accountID);
-      console.log('Balance: balance --->', balance);
-      console.log('Balance: recipientID --->', recipientID);
-      console.log('Balance: recipientBalance --->', recipientBalance);
-    } catch (error) {
-      let errorMessage =
-        error instanceof Error ? error.message : 'Unknown Error';
-      // setTheBalance('ERR');
-      console.log('ERROR in Balance:', errorMessage);
+      log.res(accountID, balance, recipientID, recipientBalance);
+    } catch (err) {
+      let message = err instanceof Error ? err.message : 'Unknown Error';
+      log.err(message);
+      setTheBalance('ERROR');
     }
   };
 

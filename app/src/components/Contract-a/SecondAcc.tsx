@@ -11,6 +11,7 @@ import {
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
 import * as borsh from 'borsh';
+import { secondAcc as log } from '../../logs/contract-a.js';
 
 // The state of a greeting account managed by the hello world program
 class SecondAccount {
@@ -37,7 +38,7 @@ const SecondAccComponent = () => {
 
   const { programID, accSecretID } = useContext(AContext);
 
-  useMemo(() => console.log('SecondAcc in process...'), []);
+  useMemo(() => log.process(), []);
 
   const createSecondAcc = async () => {
     try {
@@ -51,7 +52,7 @@ const SecondAccComponent = () => {
 
       const ACCOUNT_SEED = 'Hello! ...';
 
-      const greetedPubkey = await PublicKey.createWithSeed(
+      const secondAccPubkey = await PublicKey.createWithSeed(
         payer.publicKey,
         ACCOUNT_SEED,
         programId
@@ -66,7 +67,7 @@ const SecondAccComponent = () => {
           fromPubkey: payer.publicKey,
           basePubkey: payer.publicKey,
           seed: ACCOUNT_SEED,
-          newAccountPubkey: greetedPubkey,
+          newAccountPubkey: secondAccPubkey,
           lamports,
           space: ACCOUNT_SIZE,
           programId,
@@ -84,14 +85,13 @@ const SecondAccComponent = () => {
       console.log('SecondAcc: accSecretID --->', accSecretID);
       console.log('SecondAcc: programId --->', programId);
       console.log('SecondAcc: payer --->', payer);
-      console.log('SecondAcc: greetedPubkey --->', greetedPubkey);
+      console.log('SecondAcc: secondAccPubkey --->', secondAccPubkey);
       console.log('SecondAcc: lamports --->', lamports);
       console.log('SecondAcc: transaction --->', transaction);
       console.log('SecondAcc: hash --->', hash);
-    } catch (error) {
-      let errorMessage =
-        error instanceof Error ? error.message : 'Unknown Error';
-      console.log('ERROR in SecondAcc:', errorMessage);
+    } catch (err) {
+      let message = err instanceof Error ? err.message : 'Unknown Error';
+      log.err(message);
     }
   };
 
