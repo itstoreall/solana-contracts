@@ -7,10 +7,10 @@ import constants from './constants';
 import ConnectComponent from './Connect.tsx';
 import KeypairComponent from './Keypair.tsx';
 import FundComponent from './Fund.tsx';
-// import BalanceComponent from './Balance.tsx';
-// import TransferComponent from './Transfer.tsx';
-// import DeployComponent from './Deploy.tsx';
-// import GreeterComponent from './Greeter.tsx';
+import BalanceComponent from './Balance.tsx';
+import TransferComponent from './Transfer.tsx';
+import AccountInfoComponent from './AccInfo.tsx';
+import SecondAccComponent from './SecondAcc.tsx';
 // import GetterComponent from './Getter.tsx';
 // import SetterComponent from './Setter.tsx';
 // -------------------
@@ -19,20 +19,16 @@ const ContractA = () => {
   const [accountID, setAccountID] = useState(constants.ACCOUNT_ID);
   const [accSecretID, setAccSecretID] = useState(constants.ACCOUNT_SECRET);
   const [recipientID, setRecipientID] = useState(constants.RECIPIENT_ID);
-  const [programID, setProgramID] = useState(
-    'Bqo8fvsrNRfxm3GPcAFqHCzJe2JQB6m5MFyxdaHwin1Z' // +
-  );
-  const [newProgramID, setNewProgramID] = useState(
-    'EGcUbQ51CCwrDuuEk6u8L6QeAHoMsZitkid8mA2Wz2Ye'
-  );
+  const [programID, setProgramID] = useState(constants.PROGRAM_ID);
+  const [newProgramID, setNewProgramID] = useState(constants.SECOND_PROGRAM_ID);
 
   const [connect, setConnect] = useState(false);
   const [keypair, setKeypair] = useState(false);
   const [fund, setFund] = useState(false);
-  // const [balance, setBalance] = useState(false);
-  // const [transfer, setTransfer] = useState(false);
-  // const [deploy, setDeploy] = useState(false);
-  // const [greeter, setGreeter] = useState(false);
+  const [balance, setBalance] = useState(false);
+  const [transfer, setTransfer] = useState(false);
+  const [accountInfo, setAccountInfo] = useState(false);
+  const [secondAcc, setSecondAcc] = useState(false);
   // const [greeting, setGreeting] = useState(false);
   // const [setter, setSetter] = useState(false);
 
@@ -51,7 +47,7 @@ const ContractA = () => {
         setNewProgramID,
       }}
     >
-      <div style={{ fontSize: '14px' }}>
+      <div style={{ paddingBottom: '40px', fontSize: '14px' }}>
         <div style={{ padding: '20px' }}>
           <p>{`accountID: ${accountID}`}</p>
           <p>{`accSecretID: ${accSecretID.slice(0, 50)} ...`}</p>
@@ -106,7 +102,7 @@ const ContractA = () => {
           </div>
         </div>
 
-        {/* <div
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -119,8 +115,9 @@ const ContractA = () => {
           <div style={{ padding: 40 }}>
             <div>{balance && <BalanceComponent />}</div>
           </div>
-        </div> */}
-        {/* <div
+        </div>
+
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -128,13 +125,14 @@ const ContractA = () => {
           }}
         >
           <div style={{ padding: 40 }}>
-            <button onClick={() => setTransfer(true)}>Make transfer</button>
+            <button onClick={() => setTransfer(true)}>Make transf</button>
           </div>
           <div style={{ padding: 40 }}>
             <div>{transfer && <TransferComponent />}</div>
           </div>
-        </div> */}
-        {/* <div
+        </div>
+
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -142,13 +140,14 @@ const ContractA = () => {
           }}
         >
           <div style={{ padding: 40 }}>
-            <button onClick={() => setDeploy(true)}>Get prog info</button>
+            <button onClick={() => setAccountInfo(true)}>Get acc info</button>
           </div>
           <div style={{ padding: 40 }}>
-            <div>{deploy && <DeployComponent />}</div>
+            <div>{accountInfo && <AccountInfoComponent />}</div>
           </div>
-        </div> */}
-        {/* <div
+        </div>
+
+        <div
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -156,14 +155,15 @@ const ContractA = () => {
           }}
         >
           <div style={{ padding: 40 }}>
-            <button disabled onClick={() => setGreeter(true)}>
-              Create greeter
+            <button disabled onClick={() => setSecondAcc(true)}>
+              Crt new acc
             </button>
           </div>
           <div style={{ padding: 40 }}>
-            <div>{greeter && <GreeterComponent />}</div>
+            <div>{secondAcc && <SecondAccComponent />}</div>
           </div>
-        </div> */}
+        </div>
+
         {/* <div
           style={{
             display: 'flex',

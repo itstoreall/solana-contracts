@@ -5,6 +5,7 @@ const constants = {
   ACCOUNT_SECRET: secret,
   RECIPIENT_ID: 'k31vP9iEyj6z6VhzKkebyM73a4LqNEb3FLU6fTTiDo3',
   PROGRAM_ID: 'Bqo8fvsrNRfxm3GPcAFqHCzJe2JQB6m5MFyxdaHwin1Z',
+  SECOND_PROGRAM_ID: 'FX8kG3UsYbWbVjAkfdUmQ2TL5AYLZghw9ykrLu5zLivu',
 };
 
 export default constants;
