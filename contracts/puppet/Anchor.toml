@@ -1,0 +1,33 @@
+# [provider]
+# cluster = "localnet"
+# wallet = "~/.config/solana/id.json"
+
+# [programs.localnet]
+# puppet = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+# puppet_master = "HmbTLCmaGvZhKnn1Zfa1JVnp7vkMV4DYVxPLWBVoN65L"
+
+# [scripts]
+# test = "yarn run mocha -t 1000000 tests/"
+
+[programs.localnet]
+puppet = "DdJ9b469WFWtrYxmDW4X5nc1XtLN9MQqTmY3NJRc6p1D"
+puppet_master = "D6MkwxMxPQ3Lgn6TvPE39ofiS6LURKHgsoQ7pWPAv38F"
+[programs.devnet]
+puppet = "DdJ9b469WFWtrYxmDW4X5nc1XtLN9MQqTmY3NJRc6p1D"
+puppet_master = "D6MkwxMxPQ3Lgn6TvPE39ofiS6LURKHgsoQ7pWPAv38F"
+[programs.testnet]
+puppet = "DdJ9b469WFWtrYxmDW4X5nc1XtLN9MQqTmY3NJRc6p1D"
+puppet_master = "D6MkwxMxPQ3Lgn6TvPE39ofiS6LURKHgsoQ7pWPAv38F"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+# cluster = "localnet"
+cluster = "devnet"
+wallet = "/Users/serhiistanislav/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+
