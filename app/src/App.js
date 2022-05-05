@@ -9,7 +9,9 @@ import {
 } from '@solana/wallet-adapter-react';
 
 // --- Contracts: ---
-import ContractA from './components/Contract-a';
+// import Puppet from './components/puppet';
+// import ContractA from './components/Contract-a';
+import ContractB from './components/Contract-b';
 // ------------------
 
 const { log } = console;
@@ -27,6 +29,8 @@ const Context = ({ children }) => {
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
   const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
+  // console.log('wallets --->', wallets);
+
   useEffect(() => log('app:', wallets[0].name, endpoint), [endpoint, wallets]);
 
   return (
@@ -41,7 +45,9 @@ const Context = ({ children }) => {
 const Content = () => {
   return (
     <>
-      <ContractA />
+      {/* <Puppet /> */}
+      {/* <ContractA /> */}
+      <ContractB />
     </>
   );
 };
