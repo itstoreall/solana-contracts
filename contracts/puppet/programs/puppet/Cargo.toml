@@ -1,8 +1,10 @@
 [package]
 name = "puppet"
 version = "0.1.0"
+rust-version = "1.56"
 description = "Created with Anchor"
-edition = "2018"
+# edition = "2018"
+edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
