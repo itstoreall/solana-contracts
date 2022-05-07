@@ -45,7 +45,7 @@ const GetterComponent = () => {
         accountInfo.data
       );
 
-      setTheGreeting(String(greeting.counter));
+      greeting?.counter && setTheGreeting(String(greeting.counter));
 
       log.res(newProgramID, accountInfo, greeting);
 
@@ -64,17 +64,17 @@ const GetterComponent = () => {
   return (
     <div>
       <>
-        {theGreeting !== null && (
-          <div>
-            <span style={{ display: 'inline-flex', width: '150px' }}>
-              greeting:
-            </span>
+        <div>
+          <span style={{ display: 'inline-flex', width: '150px' }}>
+            greeting:
+          </span>
+          {theGreeting && (
             <span style={{ display: 'inline-flex', width: '150px' }}>
               {theGreeting}
             </span>
-            <button onClick={() => setTheGreeting(null)}>again</button>
-          </div>
-        )}
+          )}
+          <button onClick={() => setTheGreeting(null)}>again</button>
+        </div>
       </>
     </div>
   );

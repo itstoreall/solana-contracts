@@ -24,14 +24,16 @@ const SetterComponent = () => {
       const url = clusterApiUrl('devnet');
       const connection = new Connection(url, 'confirmed');
 
-      const greeterPublicKey = new PublicKey(newProgramID);
+      const secondProgramPublicKey = new PublicKey(newProgramID);
       const programKey = new PublicKey(programID);
 
       const payerSecretKey = new Uint8Array(JSON.parse(accSecretID));
       const payerKeypair = Keypair.fromSecretKey(payerSecretKey);
 
       const instruction = new TransactionInstruction({
-        keys: [{ pubkey: greeterPublicKey, isSigner: false, isWritable: true }],
+        keys: [
+          { pubkey: secondProgramPublicKey, isSigner: false, isWritable: true },
+        ],
         programId: programKey,
         data: Buffer.alloc(0), // All instructions are hellos
       });

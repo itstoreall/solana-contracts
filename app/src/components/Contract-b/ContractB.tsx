@@ -155,10 +155,7 @@ const ContractA = () => {
           }}
         >
           <div style={{ padding: 40 }}>
-            <button
-              // disabled
-              onClick={() => setSecondAcc(true)}
-            >
+            <button disabled onClick={() => setSecondAcc(true)}>
               Crt new acc
             </button>
           </div>
