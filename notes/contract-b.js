@@ -12,10 +12,12 @@ mkdir solana-wallet
 solana-keygen new --outfile solana-wallet/keypair.json
 solana airdrop 1 $(solana-keygen pubkey solana-wallet/keypair.json)
 solana account $(solana-keygen pubkey solana-wallet/keypair.json)
-solana deploy -v --keypair solana-wallet/keypair.json dist/solana/program/contract_b.so
 
 build:
 cargo build-bpf --manifest-path=Cargo.toml --bpf-out-dir=dist/solana/program
+
+deploy:
+solana deploy -v --keypair solana-wallet/keypair.json dist/solana/program/contract_b.so
 
 pubkey: 3RzayTaeqskZPrww48qeCb1C8Ey6mWNJrSpmK9BrSRh8
 ================================================================================

@@ -11,7 +11,8 @@ import {
 // --- Contracts: ---
 // import Puppet from './components/puppet';
 // import ContractA from './components/Contract-a';
-import ContractB from './components/Contract-b';
+// import ContractB from './components/Contract-b';
+import StateProgram from './components/StateProgram';
 // ------------------
 
 const { log } = console;
@@ -47,7 +48,8 @@ const Content = () => {
     <>
       {/* <Puppet /> */}
       {/* <ContractA /> */}
-      <ContractB />
+      {/* <ContractB /> */}
+      <StateProgram />
     </>
   );
 };
