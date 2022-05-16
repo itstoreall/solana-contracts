@@ -75,21 +75,25 @@ mod test {
     #[test]
     fn test_get_settings_address_with_seed() {
         let (address, bump) = Settings::get_settings_pubkey_with_bump();
+
         assert_eq!(
             address,
-            Pubkey::from_str("4voA9ct4uAJuBVLNfoaPiU1VgpatMpGKRLHfvP8CZ147").unwrap()
+            Pubkey::from_str("GgbZKvNWxJdgCAu35mRU4RAPKmDEvahwGUf7XrfqDvXq").unwrap()
         );
-        assert_eq!(bump, 255);
+        assert_eq!(bump, 253);
     }
 
     #[test]
     fn test_get_counter_pubkey() {
         let pubkey = Counter::get_counter_pubkey(
-            &Pubkey::from_str("FKr2pLkJXFpnJf2sUtStVwDiQPq61rKngtXyhLw8SQbF").unwrap(),
+            &Pubkey::from_str("73sFU11rddWN5hL19F9mcNFvAWZ9NVriAnsqGM1LK1Fn").unwrap(),
         );
+
+        println!("pubkey --> {}", pubkey);
+
         assert_eq!(
             pubkey,
-            Pubkey::from_str("9JVaomeo7Ps8D41whGLkz1c1wzWGfKpk62Mopnf3B274").unwrap()
+            Pubkey::from_str("4Aih266wGKDBMrM5VoHkEc3ysSkHVX7kzgJTpP2Pkn1c").unwrap()
         );
     }
 }

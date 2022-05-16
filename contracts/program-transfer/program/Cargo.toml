@@ -1,0 +1,23 @@
+[package]
+name = "program-transfer"
+version = "0.1.0"
+edition = "2021"
+description = "Program transfer"
+
+
+[dependencies]
+solana-program = "1.6.10"
+
+
+[lib]
+name = "program_transfer"
+crate-type = ["cdylib", "lib"]
+
+# [package]
+# name = "program-transfer"
+# version = "0.1.0"
+# edition = "2021"
+
+# # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# [dependencies]

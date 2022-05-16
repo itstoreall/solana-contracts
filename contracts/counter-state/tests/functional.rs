@@ -19,7 +19,7 @@ struct Env {
 
 impl Env {
     async fn new() -> Self {
-        let program_test = ProgramTest::new("counter", id(), processor!(process_instruction));
+        let program_test = ProgramTest::new("counter-state", id(), processor!(process_instruction));
         let mut ctx = program_test.start_with_context().await;
 
         let admin = Keypair::new();
