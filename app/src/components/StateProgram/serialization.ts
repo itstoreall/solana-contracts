@@ -1,3 +1,4 @@
+// @ts-nocheck
 import lo from 'buffer-layout';
 import BN from 'bn.js';
 
@@ -59,5 +60,6 @@ export function encodeUpdateSettingsIx(
   ]);
   const b = Buffer.alloc(32 + 4 + 4);
   schema.encode({ admin, inc_step, dec_step }, b);
+
   return Buffer.from([CounterIxOrder.UpdateSettings, ...b]);
 }
