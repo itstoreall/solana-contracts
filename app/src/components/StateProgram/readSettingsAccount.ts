@@ -11,7 +11,11 @@ const readSettingsAccount = async (keys: {}, connection: {}) => {
     return;
   }
 
-  return decodeSettings(account.data);
+  const res = decodeSettings(account.data);
+
+  console.log('settingsInfo -->', res);
+
+  return res;
 };
 
 export default readSettingsAccount;

@@ -7,10 +7,6 @@ import {
 } from '@solana/web3.js';
 import { encodeUpdateSettingsIx } from './serialization.ts';
 
-const delay = (ms: number) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-};
-
 const updateCounterSettings = async (
   admin: Uint8Array,
   inc_step: number,
@@ -18,15 +14,17 @@ const updateCounterSettings = async (
   keys: {},
   connection: {}
 ) => {
+  const { adminKeypair, programKeypair, settingsPubkey } = keys;
+
   const updateSettingsIx = new TransactionInstruction({
-    programId: keys.programKeypair.publicKey,
+    programId: programKeypair.publicKey,
     keys: [
       {
-        pubkey: keys.adminKeypair.publicKey,
+        pubkey: adminKeypair.publicKey,
         isSigner: true,
         isWritable: true,
       },
-      { pubkey: keys.settingsPubkey[0], isSigner: false, isWritable: true },
+      { pubkey: settingsPubkey[0], isSigner: false, isWritable: true },
       { pubkey: SYSVAR_RENT_PUBKEY, isSigner: false, isWritable: false },
       { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
     ],
@@ -35,26 +33,22 @@ const updateCounterSettings = async (
 
   const tx = new Transaction().add(updateSettingsIx);
 
-  tx.feePayer = keys.adminKeypair.publicKey;
+  tx.feePayer = adminKeypair.publicKey;
   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
 
   console.log('tx -->', tx);
 
-  // const txHash = await sendAndConfirmTransaction(
-  //   connection,
-  //   tx,
-  //   [keys.adminKeypair]
-  //   // {
-  //   //   preflightCommitment: 'max',
-  //   // }
-  // );
-
-  const txHash = await connection.sendTransaction(tx, [keys.adminKeypair], {
+  const txHash = await connection.sendTransaction(tx, [adminKeypair], {
     preflightCommitment: 'max',
   });
 
-  console.log('update settings tx', txHash);
-  await delay(3000);
+  console.log('update settings hash:', txHash);
+
+  return txHash;
 };
 
 export default updateCounterSettings;
+
+/*
+await delay(3000)
+*/
