@@ -4,6 +4,7 @@ import createKeypair from './createKeypair.ts';
 import abminPrivatKey from './devnet/admin.json';
 import userPrivatKey from './devnet/user.json';
 import programPrivatKey from './devnet/program.json';
+import { COUNTER_SEED, SETTINGS_SEED } from './constants';
 
 const adminKeypair = createKeypair(abminPrivatKey);
 const userKeypair = createKeypair(userPrivatKey);
@@ -11,18 +12,15 @@ const programKeypair = createKeypair(programPrivatKey);
 let counterPubkey = new PublicKey(0);
 let settingsPubkey = new PublicKey(0);
 
-const counterSeed = 'counter';
-const settingsSeed = 'settings';
-
 const init = async (connection: {}) => {
   counterPubkey = await PublicKey.createWithSeed(
     userKeypair.publicKey,
-    counterSeed, // "counter"
+    COUNTER_SEED, // "counter"
     programKeypair.publicKey
   );
 
   settingsPubkey = await PublicKey.findProgramAddress(
-    [Buffer.from(settingsSeed, 'utf-8')], // "settings"
+    [Buffer.from(SETTINGS_SEED, 'utf-8')], // "settings"
     programKeypair.publicKey
   );
 

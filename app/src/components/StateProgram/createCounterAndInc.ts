@@ -7,19 +7,17 @@ import {
 import BN from 'bn.js';
 import readCounterAccount from './readCounterAccount.ts';
 import { encodeCounter, encodeIncIx } from './serialization.ts';
-
-const delay = (ms: number) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
-};
+// import delay from './delay.ts';
+import { COUNTER_SEED } from './constants';
 
 const createCounterAndInc = async (keys: {}, connection: {}) => {
-  const counterSeed = 'counter';
+  const { userKeypair, programKeypair, counterPubkey, settingsPubkey } = keys;
 
   const counterAccount = await readCounterAccount(keys, connection);
 
-  if (counterAccount.counter > 0) {
-    console.log('The account already exists --->', counterAccount.counter);
-    return;
+  if (counterAccount?.counter > 0) {
+    console.log('The account already exists --->', counterAccount?.counter);
+    return 'acc already exists';
   }
 
   const data = encodeCounter(0, new BN(0));
@@ -28,35 +26,39 @@ const createCounterAndInc = async (keys: {}, connection: {}) => {
   );
 
   const createAccountIx = SystemProgram.createAccountWithSeed({
-    fromPubkey: keys.userKeypair.publicKey, // the address who will sent rent lamports
-    basePubkey: keys.userKeypair.publicKey, // user publicKey
-    seed: counterSeed, // "counter"
-    newAccountPubkey: keys.counterPubkey,
+    fromPubkey: userKeypair.publicKey, // the address who will sent rent lamports
+    basePubkey: userKeypair.publicKey, // user publicKey
+    seed: COUNTER_SEED, // "counter"
+    newAccountPubkey: counterPubkey,
     space: data.length,
     lamports: lamports,
-    programId: keys.programKeypair.publicKey,
+    programId: programKeypair.publicKey,
   });
 
   const incIx = new TransactionInstruction({
-    programId: keys.programKeypair.publicKey,
+    programId: programKeypair.publicKey,
     keys: [
       {
-        pubkey: keys.userKeypair.publicKey,
+        pubkey: userKeypair.publicKey,
         isSigner: true,
         isWritable: false,
       },
-      { pubkey: keys.counterPubkey, isSigner: false, isWritable: true },
-      { pubkey: keys.settingsPubkey[0], isSigner: false, isWritable: false },
+      { pubkey: counterPubkey, isSigner: false, isWritable: true },
+      { pubkey: settingsPubkey[0], isSigner: false, isWritable: false },
     ],
     data: encodeIncIx(),
   });
 
   const tx = new Transaction().add(createAccountIx, incIx);
-  const res = await connection.sendTransaction(tx, [keys.userKeypair]);
+  const hash = await connection.sendTransaction(tx, [userKeypair]);
 
-  console.log('create counter and inc tx', res);
+  console.log('create counter and inc tx', hash);
 
-  await delay(3000);
+  return hash;
 };
 
 export default createCounterAndInc;
+
+/*
+await delay(3000)
+*/

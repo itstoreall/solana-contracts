@@ -9,7 +9,11 @@ const readCounterAccount = async (keys: {}, connection: {}) => {
     return;
   }
 
-  return decodeCounter(account.data);
+  const res = decodeCounter(account.data);
+
+  console.log('counterInfo -->', res);
+
+  return res;
 };
 
 export default readCounterAccount;
