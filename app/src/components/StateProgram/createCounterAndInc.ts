@@ -15,6 +15,8 @@ const createCounterAndInc = async (keys: {}, connection: {}) => {
 
   const counterAccount = await readCounterAccount(keys, connection);
 
+  console.log('counterAccount -->', counterAccount);
+
   if (counterAccount?.counter > 0) {
     console.log('The account already exists --->', counterAccount?.counter);
     return 'acc already exists';
