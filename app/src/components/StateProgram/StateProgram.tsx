@@ -1,7 +1,10 @@
 // @ts-nocheck
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { clusterApiUrl, Connection } from '@solana/web3.js';
-import init from './init.ts';
+// import init from './init.ts';
+import initWithPhantom from './init.Phantom.ts';
+import connectPhantom from './connectPhantom.ts';
+import getBalances from './getBalances.ts';
 import updateCounterSettings from './updateCounterSettings.ts';
 import createCounterAndInc from './createCounterAndInc.ts';
 import readSettingsAccount from './readSettingsAccount.ts';
@@ -12,40 +15,50 @@ import consoleAllKeys from './consoleAllKeys.ts';
 
 const StateProgram = () => {
   const [keys, setKeys] = useState(null);
-  const [connection, setConnection] = useState(null);
+  const [connect, setConnect] = useState(null);
+  const [phantom, setPhantom] = useState(null);
   const [accInfo, setAccInfo] = useState(null);
   const [setInfo, setSetInfo] = useState(null);
   const [incHash, setIncHash] = useState(null);
   const [decHash, setDecHash] = useState(null);
   const [counterHash, setCounterHash] = useState(null);
   const [settingsHash, setSettingsHash] = useState(null);
+  const [admBalance, setAdmBalance] = useState(null);
+  const [usrBalance, setUsrBalance] = useState(null);
+  const [phantomBalance, setPhantomBalance] = useState(null);
 
   useEffect(() => {
     const url = clusterApiUrl('devnet');
     const connection = new Connection(url, 'confirmed');
-    init(connection).then((data: {}) => !keys && setKeys(data));
-    setConnection(connection);
+
+    initWithPhantom(connection).then((data: {}) => !keys && setKeys(data));
+    // init(connection).then((data: {}) => !keys && setKeys(data));
+
+    setConnect(connection);
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => setPhantom(connectPhantom()), []);
+
   const getCounterInfo = async () =>
-    setAccInfo(await readCounterAccount(keys, connection));
+    setAccInfo(await readCounterAccount(keys, connect));
 
   const getSettingsInfo = async () =>
-    setSetInfo(await readSettingsAccount(keys, connection));
+    setSetInfo(await readSettingsAccount(keys, connect));
 
   const decrement = async () => {
-    const hash = await decCounter(keys, connection);
+    const hash = await decCounter(keys, connect);
     setDecHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
   };
 
   const increment = async () => {
-    const hash = await incCounter(keys, connection);
+    const hash = await incCounter(keys, connect);
     setIncHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
   };
 
   const createCounter = async () => {
-    const hash = await createCounterAndInc(keys, connection);
+    const hash = await createCounterAndInc(keys, connect, phantom);
+    console.log('hash:', hash);
     setCounterHash(
       hash.length !== 18
         ? `https://explorer.solana.com/tx/${hash}?cluster=devnet`
@@ -59,7 +72,7 @@ const StateProgram = () => {
       1,
       1,
       keys,
-      connection
+      connect
     );
     setSettingsHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
   };
@@ -229,6 +242,21 @@ const StateProgram = () => {
       >
         <div style={{ padding: 40 }}>
           <button onClick={() => consoleAllKeys(keys)}>Show keys</button>
+        </div>
+        <div style={{ padding: 40 }}>open your console</div>
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          borderBottom: '1px solid #999',
+        }}
+      >
+        <div style={{ padding: 40 }}>
+          <button onClick={() => getBalances(connect, keys, phantom)}>
+            Get balances
+          </button>
         </div>
         <div style={{ padding: 40 }}>open your console</div>
       </div>
