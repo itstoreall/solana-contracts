@@ -1,18 +1,21 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react';
 import { clusterApiUrl, Connection } from '@solana/web3.js';
-import init from './init.ts';
+import initWithPhantom from './init.Phantom.ts';
+import connectPhantom from './connectPhantom.ts';
+import getBalances from './getBalances.ts';
 import updateCounterSettings from './updateCounterSettings.ts';
-import createCounterAndInc from './createCounterAndInc.ts';
+import createCounterAndIncWithPhantom from './createCounterAndInc.Phantom.ts';
 import readSettingsAccount from './readSettingsAccount.ts';
-import readCounterAccount from './readCounterAccount.ts';
-import decCounter from './decCounter.ts';
-import incCounter from './incCounter.ts';
+import readCounterAccountWithPhantom from './readCounterAccount.Phantom.ts';
+import incCounterWithPhantom from './incCounter.Phantom.ts';
+import decCounterWithPhantom from './decCounter.Phantom.ts';
 import consoleAllKeys from './consoleAllKeys.ts';
 
-const StateProgram = () => {
+const StateProgramPhantom = () => {
   const [keys, setKeys] = useState(null);
   const [connect, setConnect] = useState(null);
+  const [provider, setProvider] = useState(null);
   const [accInfo, setAccInfo] = useState(null);
   const [setInfo, setSetInfo] = useState(null);
   const [incHash, setIncHash] = useState(null);
@@ -23,30 +26,36 @@ const StateProgram = () => {
   useEffect(() => {
     const url = clusterApiUrl('devnet');
     const connection = new Connection(url, 'confirmed');
-
-    init(connection).then((data: {}) => !keys && setKeys(data));
+    connectPhantom().then((data: {}) => setProvider(data));
     setConnect(connection);
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    initWithPhantom(connect, provider).then(
+      (data: {}) => !keys && setKeys(data)
+    );
+    // eslint-disable-next-line
+  }, [provider, connect]);
+
   const getCounterInfo = async () =>
-    setAccInfo(await readCounterAccount(keys, connect));
+    setAccInfo(await readCounterAccountWithPhantom(keys, connect, phantom));
 
   const getSettingsInfo = async () =>
     setSetInfo(await readSettingsAccount(keys, connect));
 
   const decrement = async () => {
-    const hash = await decCounter(keys, connect);
+    const hash = await decCounterWithPhantom(keys, connect);
     setDecHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
   };
 
   const increment = async () => {
-    const hash = await incCounter(keys, connect);
+    const hash = await incCounterWithPhantom(keys, connect);
     setIncHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
   };
 
   const createCounter = async () => {
-    const hash = await createCounterAndInc(keys, connect);
+    const hash = await createCounterAndIncWithPhantom(keys, connect, provider);
     console.log('hash:', hash);
     setCounterHash(
       hash.length !== 18
@@ -66,6 +75,8 @@ const StateProgram = () => {
     setSettingsHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
   };
 
+  keys && console.log('keys.provider -->', keys.provider._publicKey.toBase58());
+
   return (
     <div style={{ paddingBottom: '40px', fontSize: '14px' }}>
       <div style={{ padding: '20px', backgroundColor: 'pink' }}>
@@ -73,7 +84,7 @@ const StateProgram = () => {
           keys && keys.adminKeypair.publicKey.toBase58()
         }`}</p>
         <p style={{ marginBottom: '10px' }}>
-          {`user: ${keys && keys.userKeypair.publicKey.toBase58()}`}
+          {`user: ${provider && provider.publicKey.toBase58()}`}
         </p>
         <p>{`program: ${keys && keys.programKeypair.publicKey.toBase58()}`}</p>
       </div>
@@ -234,8 +245,23 @@ const StateProgram = () => {
         </div>
         <div style={{ padding: 40 }}>open your console</div>
       </div>
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          borderBottom: '1px solid #999',
+        }}
+      >
+        <div style={{ padding: 40 }}>
+          <button onClick={() => getBalances(connect, keys, phantom)}>
+            Get balances
+          </button>
+        </div>
+        <div style={{ padding: 40 }}>open your console</div>
+      </div>
     </div>
   );
 };
 
-export default StateProgram;
+export default StateProgramPhantom;

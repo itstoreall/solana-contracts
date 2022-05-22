@@ -1,38 +1,24 @@
 // @ts-nocheck
-const connectPhantom = () => {
-  const phantomWallet = {
-    address: '',
-    publicKey: null,
-    provider: null,
-  };
-
-  const updatePhantomWallet = publicKey => {
-    phantomWallet.address = publicKey.toString();
-    phantomWallet.publicKey = publicKey;
-  };
-
-  const getConnectPhantom = async () => {
+const connectPhantom = async () => {
+  const getConnectPhantom = async (provider: {}) => {
     try {
       const { publicKey } = await window.solana.connect({
         onlyIfTrusted: true,
       });
-      updatePhantomWallet(publicKey);
+      return provider;
     } catch (err) {
       console.log('ERROR in getProvider:', err.message);
       const { publicKey } = await window.solana.connect();
-      updatePhantomWallet(publicKey);
+      return publicKey && provider;
     }
   };
 
   if ('solana' in window) {
     const provider = window.solana;
     if (provider.isPhantom) {
-      phantomWallet.provider = provider;
-      getConnectPhantom();
+      return getConnectPhantom(provider);
     }
   }
-  // console.log(`Phantom provider: ${window.solana && window.solana.isPhantom}`);
-  return phantomWallet;
 };
 
 export default connectPhantom;
