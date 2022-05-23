@@ -2,13 +2,11 @@
 import { PublicKey } from '@solana/web3.js';
 import createKeypair from './createKeypair.ts';
 import abminPrivatKey from './devnet/admin.json';
-// import userPrivatKey from './devnet/user.json';
 import programPrivatKey from './devnet/program.json';
 import { COUNTER_SEED, SETTINGS_SEED } from './constants';
-import nacl from 'tweetnacl';
+import { init as log } from '../../logs/state-program';
 
 const adminKeypair = createKeypair(abminPrivatKey);
-// const userKeypair = createKeypair(userPrivatKey);
 const programKeypair = createKeypair(programPrivatKey);
 let counterPubkey = new PublicKey(0);
 let settingsPubkey = new PublicKey(0);
@@ -32,10 +30,7 @@ const initPhantom = async (connection: {}, provider: {}) => {
       programKeypair.publicKey
     );
 
-    !AccountInfo && console.error('Counter is not deployed. Deploy it first.');
-
-    console.log('init provider Counter -->', counterPubkey.toString());
-    console.log('init provider Settings -->', settingsPubkey.toString());
+    !AccountInfo && log.error();
 
     return {
       adminKeypair,

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Transaction, TransactionInstruction } from '@solana/web3.js';
 import { encodeDecIx } from './serialization.ts';
+import { decCounter as log } from '../../logs/state-program';
 
 const decCounter = async (keys: {}, connection: {}) => {
   const { userKeypair, programKeypair, counterPubkey, settingsPubkey } = keys;
@@ -22,7 +23,7 @@ const decCounter = async (keys: {}, connection: {}) => {
   const tx = new Transaction().add(decIx);
   const hash = await connection.sendTransaction(tx, [userKeypair]);
 
-  console.log('dec counter hash -->', hash);
+  log.hash(hash);
 
   return hash;
 };

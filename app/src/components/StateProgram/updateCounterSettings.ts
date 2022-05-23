@@ -36,8 +36,6 @@ const updateCounterSettings = async (
   tx.feePayer = adminKeypair.publicKey;
   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
 
-  console.log('tx -->', tx);
-
   const txHash = await connection.sendTransaction(tx, [adminKeypair], {
     preflightCommitment: 'max',
   });

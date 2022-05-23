@@ -7,8 +7,9 @@ import {
 import BN from 'bn.js';
 import readCounterAccountWithPhantom from './readCounterAccount.Phantom.ts';
 import { encodeCounter, encodeIncIx } from './serialization.ts';
-// import delay from './delay.ts';
 import { COUNTER_SEED } from './constants';
+import { createCounter as log } from '../../logs/state-program';
+// import delay from './delay.ts';
 
 const createCounterAndIncWithPhantom = async (
   keys: {},
@@ -19,14 +20,8 @@ const createCounterAndIncWithPhantom = async (
 
   const counterAccount = await readCounterAccountWithPhantom(keys, connection);
 
-  console.log('counterAccount -->', counterAccount);
-
   if (counterAccount?.counter > 0) {
-    console.log(
-      `The account already exists: ${keys.counterPubkey
-        .toString()
-        .slice(0, 15)}...`
-    );
+    log.exist(keys);
     return `acc already exists`;
   }
 
@@ -34,8 +29,6 @@ const createCounterAndIncWithPhantom = async (
   const lamports = await connection.getMinimumBalanceForRentExemption(
     data.length
   );
-
-  console.log('provider -->', provider.publicKey);
 
   const createTransaction = async () => {
     if (!provider.publicKey) return;
@@ -92,50 +85,11 @@ const createCounterAndIncWithPhantom = async (
     }
   };
 
-  const hash = sendTransaction();
-  hash.then(data => console.log('create counter hash:', data));
+  const hash = await sendTransaction();
+
+  log.hash(hash);
 
   return hash;
-  // console.log('data -->', data);
-  // console.log('lamports -->', lamports);
-
-  // const createAccountIx = SystemProgram.createAccountWithSeed({
-  //   fromPubkey: provider._publicKey, // the address who will sent rent lamports
-  //   basePubkey: provider._publicKey, // user publicKey
-  //   seed: COUNTER_SEED, // "counter"
-  //   newAccountPubkey: counterPubkey,
-  //   space: data.length,
-  //   lamports: lamports,
-  //   programId: programKeypair.publicKey,
-  // });
-
-  // console.log('createAccountIx -->', createAccountIx);
-
-  // const incIx = new TransactionInstruction({
-  //   programId: programKeypair.publicKey,
-  //   keys: [
-  //     {
-  //       pubkey: provider._publicKey,
-  //       isSigner: true,
-  //       isWritable: false,
-  //     },
-  //     { pubkey: counterPubkey, isSigner: false, isWritable: true },
-  //     { pubkey: settingsPubkey[0], isSigner: false, isWritable: false },
-  //   ],
-  //   data: encodeIncIx(),
-  // });
-
-  // console.log('incIx -->', incIx);
-
-  // const tx = new Transaction().add(createAccountIx, incIx);
-
-  // console.log('tx -->', tx);
-
-  // const hash = await connection.sendTransaction(tx);
-
-  // console.log('create counter and inc tx', hash);
-
-  // return hash;
 };
 
 export default createCounterAndIncWithPhantom;

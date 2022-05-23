@@ -5,7 +5,7 @@ import abminPrivatKey from './devnet/admin.json';
 import userPrivatKey from './devnet/user.json';
 import programPrivatKey from './devnet/program.json';
 import { COUNTER_SEED, SETTINGS_SEED } from './constants';
-import nacl from 'tweetnacl';
+import { init as log } from '../../logs/state-program';
 
 const adminKeypair = createKeypair(abminPrivatKey);
 const userKeypair = createKeypair(userPrivatKey);
@@ -13,11 +13,8 @@ const programKeypair = createKeypair(programPrivatKey);
 let counterPubkey = new PublicKey(0);
 let settingsPubkey = new PublicKey(0);
 
-const init = async (connection: {}, wallet: {}) => {
+const init = async (connection: {}) => {
   // const isPhantomInstalled = window.solana && window.solana.isPhantom;
-
-  // console.log('isPhantomInstalled -->', isPhantomInstalled);
-  // console.log('wallet -->', wallet.publicKey);
 
   counterPubkey = await PublicKey.createWithSeed(
     userKeypair.publicKey,
@@ -30,15 +27,9 @@ const init = async (connection: {}, wallet: {}) => {
     programKeypair.publicKey
   );
 
-  // console.log('userKeypair 1 --->', userKeypair.publicKey._bn.words);
-  // console.log('wallet --->', wallet.publicKey._bn.words);
-  // userKeypair.publicKey._bn.words = wallet.publicKey._bn.words;
-  // const e = userKeypair.publicKey._bn.words.splice(1, 2);
-  // console.log('userKeypair 2 --->', e);
+  const AccountInfo = await connection.getAccountInfo(programKeypair.publicKey);
 
-  const res = await connection.getAccountInfo(programKeypair.publicKey);
-
-  !res && console.error('Counter is not deployed. Deploy it first.');
+  !AccountInfo && log.error();
 
   return {
     adminKeypair,

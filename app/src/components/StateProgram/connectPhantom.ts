@@ -1,13 +1,15 @@
 // @ts-nocheck
+import { connectPhantom as log } from '../../logs/state-program';
+
 const connectPhantom = async () => {
   const getConnectPhantom = async (provider: {}) => {
     try {
       const { publicKey } = await window.solana.connect({
         onlyIfTrusted: true,
       });
-      return provider;
+      return publicKey && provider;
     } catch (err) {
-      console.log('ERROR in getProvider:', err.message);
+      log.error(err);
       const { publicKey } = await window.solana.connect();
       return publicKey && provider;
     }

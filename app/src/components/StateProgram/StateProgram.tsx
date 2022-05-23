@@ -9,6 +9,7 @@ import readCounterAccount from './readCounterAccount.ts';
 import decCounter from './decCounter.ts';
 import incCounter from './incCounter.ts';
 import consoleAllKeys from './consoleAllKeys.ts';
+import { createCounter as log } from '../../logs/state-program';
 
 const StateProgram = () => {
   const [keys, setKeys] = useState(null);
@@ -47,7 +48,7 @@ const StateProgram = () => {
 
   const createCounter = async () => {
     const hash = await createCounterAndInc(keys, connect);
-    console.log('hash:', hash);
+    log.hash(hash);
     setCounterHash(
       hash.length !== 18
         ? `https://explorer.solana.com/tx/${hash}?cluster=devnet`

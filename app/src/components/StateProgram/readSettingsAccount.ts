@@ -1,21 +1,20 @@
 // @ts-nocheck
 import { decodeSettings } from './serialization.ts';
+import { readSettings as log } from '../../logs/state-program';
 
 const readSettingsAccount = async (keys: {}, connection: {}) => {
   const account = await connection.getAccountInfo(keys.settingsPubkey[0]);
 
   if (!account) {
-    console.error(
-      'ERROR in readSettingsAccount: settings account is not found'
-    );
+    log.error();
     return;
   }
 
-  const res = decodeSettings(account.data);
+  const settingsInfo = decodeSettings(account.data);
 
-  console.log('settingsInfo -->', res);
+  log.settingsInfo(settingsInfo, keys);
 
-  return res;
+  return settingsInfo;
 };
 
 export default readSettingsAccount;

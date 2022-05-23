@@ -1,25 +1,20 @@
 // @ts-nocheck
 import { decodeCounter } from './serialization.ts';
+import { readCounterAccount as log } from '../../logs/state-program';
 
 const readCounterAccount = async (keys: {}, connection: {}) => {
   const account = await connection.getAccountInfo(keys.counterPubkey);
 
-  // const isPhantom = window.solana && window.solana.isPhantom;
-
-  // console.log('isPhantom -->', isPhantom);
-
-  // console.log('keys -->', keys);
-
   if (!account) {
-    console.error('ERROR in readCounterAccount: counter account is not found');
+    log.error();
     return;
   }
 
-  const res = decodeCounter(account.data);
+  const counterInfo = decodeCounter(account.data);
 
-  console.log('counterInfo -->', res);
+  log.counterInfo(counterInfo, keys);
 
-  return res;
+  return counterInfo;
 };
 
 export default readCounterAccount;
