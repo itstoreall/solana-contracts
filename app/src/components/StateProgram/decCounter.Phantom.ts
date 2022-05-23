@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { Transaction, TransactionInstruction } from '@solana/web3.js';
 import { encodeDecIx } from './serialization.ts';
+import { decCounter as log } from '../../logs/state-program';
 
 const decCounterWithPhantom = async (keys: {}, connection: {}) => {
   const { provider, programKeypair, counterPubkey, settingsPubkey } = keys;
 
   const createTransaction = async () => {
     if (!provider.publicKey) return;
-    console.log('provider -->', provider.publicKey);
 
     let transaction = new Transaction().add(
       new TransactionInstruction({
@@ -25,7 +25,6 @@ const decCounterWithPhantom = async (keys: {}, connection: {}) => {
       })
     );
 
-    console.log('transaction 111 -->', transaction);
     transaction.feePayer = provider.publicKey;
 
     const anyTransaction: any = transaction;
@@ -46,9 +45,6 @@ const decCounterWithPhantom = async (keys: {}, connection: {}) => {
       let signature = await connection.sendRawTransaction(signed.serialize());
       await connection.confirmTransaction(signature);
 
-      console.log('signed -->', signed);
-      console.log('signature -->', signature);
-
       return signature;
     } catch (err) {
       console.warn(err);
@@ -57,7 +53,7 @@ const decCounterWithPhantom = async (keys: {}, connection: {}) => {
 
   const hash = await sendTransaction();
 
-  console.log('dec counter hash -->', hash);
+  log.hash(hash);
 
   return hash;
 };

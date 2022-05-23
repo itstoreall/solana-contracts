@@ -7,18 +7,17 @@ import {
 import BN from 'bn.js';
 import readCounterAccount from './readCounterAccount.ts';
 import { encodeCounter, encodeIncIx } from './serialization.ts';
-// import delay from './delay.ts';
 import { COUNTER_SEED } from './constants';
+import { createCounter as log } from '../../logs/state-program';
+// import delay from './delay.ts';
 
 const createCounterAndInc = async (keys: {}, connection: {}) => {
   const { userKeypair, programKeypair, counterPubkey, settingsPubkey } = keys;
 
   const counterAccount = await readCounterAccount(keys, connection);
 
-  console.log('counterAccount -->', counterAccount);
-
   if (counterAccount?.counter > 0) {
-    console.log('The account already exists --->', counterAccount?.counter);
+    log.exist(keys);
     return 'acc already exists';
   }
 

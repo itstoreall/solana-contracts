@@ -56,7 +56,6 @@ const StateProgramPhantom = () => {
 
   const createCounter = async () => {
     const hash = await createCounterAndIncWithPhantom(keys, connect, provider);
-    console.log('hash:', hash);
     setCounterHash(
       hash.length !== 18
         ? `https://explorer.solana.com/tx/${hash}?cluster=devnet`
@@ -75,8 +74,6 @@ const StateProgramPhantom = () => {
     setSettingsHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
   };
 
-  keys && console.log('keys.provider -->', keys.provider._publicKey.toBase58());
-
   return (
     <div style={{ paddingBottom: '40px', fontSize: '14px' }}>
       <div style={{ padding: '20px', backgroundColor: 'pink' }}>
@@ -84,9 +81,15 @@ const StateProgramPhantom = () => {
           keys && keys.adminKeypair.publicKey.toBase58()
         }`}</p>
         <p style={{ marginBottom: '10px' }}>
-          {`user: ${provider && provider.publicKey.toBase58()}`}
+          {`phantom: ${provider && provider.publicKey.toBase58()}`}
         </p>
-        <p>{`program: ${keys && keys.programKeypair.publicKey.toBase58()}`}</p>
+        <p style={{ marginBottom: '10px' }}>{`program: ${
+          keys && keys.programKeypair.publicKey.toBase58()
+        }`}</p>
+        <p style={{ marginBottom: '10px' }}>{`counter: ${
+          keys && keys.counterPubkey.toBase58()
+        }`}</p>
+        <p>{`settings: ${keys && keys.settingsPubkey[0].toBase58()}`}</p>
       </div>
 
       <div

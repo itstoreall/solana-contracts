@@ -1,11 +1,10 @@
 // @ts-nocheck
 import { Transaction, TransactionInstruction } from '@solana/web3.js';
 import { encodeIncIx } from './serialization.ts';
+import { incCounter as log } from '../../logs/state-program';
 
 const incCounterWithPhantom = async (keys: {}, connection: {}) => {
   const { provider, programKeypair, counterPubkey, settingsPubkey } = keys;
-
-  console.log('provider -->', provider.publicKey);
 
   const createTransaction = async () => {
     if (!provider.publicKey) return;
@@ -46,9 +45,6 @@ const incCounterWithPhantom = async (keys: {}, connection: {}) => {
       let signature = await connection.sendRawTransaction(signed.serialize());
       await connection.confirmTransaction(signature);
 
-      console.log('signed -->', signed);
-      console.log('signature -->', signature);
-
       return signature;
     } catch (err) {
       console.warn(err);
@@ -57,7 +53,7 @@ const incCounterWithPhantom = async (keys: {}, connection: {}) => {
 
   const hash = await sendTransaction();
 
-  console.log('inc counter hash -->', hash);
+  log.hash(hash);
 
   return hash;
 };
