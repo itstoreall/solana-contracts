@@ -6,6 +6,7 @@ import {
   TransactionInstruction,
 } from '@solana/web3.js';
 import { encodeUpdateSettingsIx } from './serialization.ts';
+import { updateSettings as log } from '../../logs/state-program';
 
 const updateCounterSettings = async (
   admin: Uint8Array,
@@ -40,7 +41,7 @@ const updateCounterSettings = async (
     preflightCommitment: 'max',
   });
 
-  console.log('update settings hash:', txHash);
+  log.hash(hash);
 
   return txHash;
 };
