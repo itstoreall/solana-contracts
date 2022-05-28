@@ -77,9 +77,9 @@ const createCounterAndIncWithPhantom = async (
 
       let signed = await provider.signTransaction(transaction);
       let signature = await connection.sendRawTransaction(signed.serialize());
-      const hash = await connection.confirmTransaction(signature);
+      await connection.confirmTransaction(signature);
 
-      return hash;
+      return signature;
     } catch (err) {
       console.warn(err);
     }

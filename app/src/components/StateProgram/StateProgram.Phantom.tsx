@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react';
 import { clusterApiUrl, Connection } from '@solana/web3.js';
+import { EXPLORER, DEVNET } from './constants';
 import initWithPhantom from './init.Phantom.ts';
 import connectPhantom from './connectPhantom.ts';
 import getBalances from './getBalances.ts';
@@ -11,6 +12,8 @@ import readCounterAccountWithPhantom from './readCounterAccount.Phantom.ts';
 import incCounterWithPhantom from './incCounter.Phantom.ts';
 import decCounterWithPhantom from './decCounter.Phantom.ts';
 import consoleAllKeys from './consoleAllKeys.ts';
+
+console.log(EXPLORER);
 
 const StateProgramPhantom = () => {
   const [keys, setKeys] = useState(null);
@@ -46,20 +49,18 @@ const StateProgramPhantom = () => {
 
   const decrement = async () => {
     const hash = await decCounterWithPhantom(keys, connect);
-    setDecHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
+    setDecHash(`${EXPLORER}/tx/${hash}?${DEVNET}`);
   };
 
   const increment = async () => {
     const hash = await incCounterWithPhantom(keys, connect);
-    setIncHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
+    setIncHash(`${EXPLORER}/tx/${hash}?${DEVNET}`);
   };
 
   const createCounter = async () => {
     const hash = await createCounterAndIncWithPhantom(keys, connect, provider);
     setCounterHash(
-      hash.length !== 18
-        ? `https://explorer.solana.com/tx/${hash}?cluster=devnet`
-        : hash
+      hash.length !== 18 ? `${EXPLORER}/tx/${hash}?${DEVNET}` : hash
     );
   };
 
@@ -71,7 +72,7 @@ const StateProgramPhantom = () => {
       keys,
       connect
     );
-    setSettingsHash(`https://explorer.solana.com/tx/${hash}?cluster=devnet`);
+    setSettingsHash(`${EXPLORER}/tx/${hash}?${DEVNET}`);
   };
 
   return (
@@ -104,9 +105,11 @@ const StateProgramPhantom = () => {
         </div>
         <div style={{ padding: 40 }}>
           <span style={{ marginRight: '20px' }}>
-            {accInfo ? accInfo.counter : 0}
+            {accInfo && typeof accInfo !== 'string' ? accInfo.counter : 0}
           </span>
-          <span>{accInfo ? accInfo.value : 0}</span>
+          <span>
+            {accInfo && typeof accInfo !== 'string' ? accInfo.value : 0}
+          </span>
         </div>
       </div>
 
