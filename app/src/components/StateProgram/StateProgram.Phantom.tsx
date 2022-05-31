@@ -13,7 +13,7 @@ import incCounterWithPhantom from './incCounter.Phantom.ts';
 import decCounterWithPhantom from './decCounter.Phantom.ts';
 import consoleAllKeys from './consoleAllKeys.ts';
 
-console.log(EXPLORER);
+console.log('EXPLORER:', EXPLORER);
 
 const StateProgramPhantom = () => {
   const [keys, setKeys] = useState(null);
