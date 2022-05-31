@@ -13,7 +13,8 @@ import {
 // import ContractA from './components/Contract-a';
 // import ContractB from './components/Contract-b';
 // import StateProgram from './components/StateProgram';
-import StateProgramPhantom from './components/StateProgram/StateProgram.Phantom.tsx';
+// import StateProgramPhantom from './components/StateProgram/StateProgram.Phantom.tsx';
+import TokenTransferInside from './components/TokenTransferInside';
 // ------------------
 
 const { log } = console;
@@ -51,7 +52,8 @@ const Content = () => {
       {/* <ContractA /> */}
       {/* <ContractB /> */}
       {/* <StateProgram /> */}
-      <StateProgramPhantom />
+      {/* <StateProgramPhantom /> */}
+      <TokenTransferInside />
     </>
   );
 };

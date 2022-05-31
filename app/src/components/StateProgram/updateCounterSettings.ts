@@ -37,13 +37,13 @@ const updateCounterSettings = async (
   tx.feePayer = adminKeypair.publicKey;
   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
 
-  const txHash = await connection.sendTransaction(tx, [adminKeypair], {
+  const hash = await connection.sendTransaction(tx, [adminKeypair], {
     preflightCommitment: 'max',
   });
 
   log.hash(hash);
 
-  return txHash;
+  return hash;
 };
 
 export default updateCounterSettings;
