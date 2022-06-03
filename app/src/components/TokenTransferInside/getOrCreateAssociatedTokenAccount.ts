@@ -14,9 +14,9 @@ const getOrCreateAssociatedTokenAccount = async (
     wallet.publicKey
   );
 
-  if (await connection.getAccountInfo(associatedTokenAddress)) {
+  // TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+  if (await connection.getAccountInfo(associatedTokenAddress))
     return associatedTokenAddress;
-  }
 
   console.log(
     'create associated token account for',
