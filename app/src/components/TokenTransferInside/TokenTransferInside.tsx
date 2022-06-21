@@ -104,10 +104,9 @@ const TokenTransferInside = () => {
   };
 
   const transferCapToHelga = async () => {
-    console.log('transfer to Carol');
+    console.log('admin to helga =>');
 
     try {
-      // from cap to helga
       const transferIx = new TransactionInstruction({
         programId: keys.programKeypair.publicKey,
         keys: [
